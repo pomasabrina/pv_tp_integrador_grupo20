@@ -1,7 +1,4 @@
-import { useContext } from 'react';
-import { AdminContext } from '../context/AdminContext';
+import { useContext } from "react";
+import { AdminContext } from "../context/AdminContext";
 
-// El hook personalizado 
-export const useAdmin = () => {
-  const context = useContext(AdminContext);
-};
+export const useAdmin = () => useContext(AdminContext);
