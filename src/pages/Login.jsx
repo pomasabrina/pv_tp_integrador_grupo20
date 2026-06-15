@@ -1,14 +1,15 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, MenuItem, Button, Typography, Container } from "@mui/material";
 
 import { useAdmin } from "../hook/useAdmin";
 
 const Login = () => {
-  const [nombre, setNombre] = useState("");
-  const [sector, setSector] = useState("");
+  const [nombre, setNombre] = useState("Juan");
+  const [sector, setSector] = useState("Gerencia");
 
-  const { iniciarSesion } = useAdmin();
+  const {admin, iniciarSesion } = useAdmin();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -16,6 +17,12 @@ const Login = () => {
     iniciarSesion({ nombre, sector });
     navigate("/dashboard");
   };
+  /*para que no se rediriga al login si ya esta logueado y no se pueda acceder a la pagina*/
+  useEffect(() => {
+    if (admin !== null) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [admin, navigate]);
 
   return (
     <Container maxWidth="sm">
