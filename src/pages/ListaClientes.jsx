@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress, Alert } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress, Alert, TextField } from "@mui/material";
 import Header from "../components/layout/header";
 
 const ListaClientes = () => {
@@ -7,7 +7,7 @@ const ListaClientes = () => {
     const [clientes, setClientes] = useState([]); //guarda los clientes obtenidos de la API
     const [loading, setLoading] = useState(true); //indica si se están cargando los clientes
     const [error, setError] = useState(null); //guarda el mensaje de error en caso de que ocurra un error al cargar los clientes  
-
+    const [busqueda, setBusqueda] = useState(""); //guarda lo q el usuario escribe en el input de búsqueda
     useEffect(() => {
 
         const obtenerClientes = async () => {
@@ -17,28 +17,34 @@ const ListaClientes = () => {
                 const data = await res.json();
 
                 setClientes(data);//guarda los clientes en el estado
-
             } catch (err) {
                 setError("Error al cargar clientes");
             } finally {
                 setLoading(false);
             }
         };
-
         obtenerClientes();
-
     }, []);
-
+   const clientesFiltrados = clientes.filter((c) =>
+    c.name.lastname.toLowerCase().includes(busqueda.toLowerCase()) ||
+    c.address.city.toLowerCase().includes(busqueda.toLowerCase())
+    );
+    
     return (
         <>
             <Header />
 
             <Typography variant="h4" sx={{ m: 3 }}>
-                Lista de Clientes
+              Lista de Clientes
             </Typography>
-
+            <TextField
+              label="Buscar por apellido o ciudad"
+              value={busqueda}
+             onChange={(e) => setBusqueda(e.target.value)}
+              sx={{ m: 3, width: 350 }}
+            />
+            
             {loading && <CircularProgress sx={{ m: 3 }} />}
-
             {error && <Alert severity="error">{error}</Alert>}
 
             {!loading && !error && (
@@ -56,7 +62,7 @@ const ListaClientes = () => {
                         </TableHead>
 
                         <TableBody>
-                            {clientes.map((c) => (
+                            {clientesFiltrados.map((c) => (
                                 <TableRow key={c.id}>
                                     <TableCell>{c.id}</TableCell>
                                     <TableCell>{c.name.firstname} {c.name.lastname}</TableCell>
