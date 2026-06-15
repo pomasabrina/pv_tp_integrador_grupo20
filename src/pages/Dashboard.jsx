@@ -1,9 +1,9 @@
 import Header from "../components/layout/header";
-import { Card, CardContent, Typography, Grid } from "@mui/material";
-
+import { Card, CardContent, Typography, Grid ,Button} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  
+  const navigate = useNavigate();
    return(
 
     <>
@@ -68,11 +68,22 @@ const Dashboard = () => {
                             </Typography>
                         </CardContent>
                     </Card>
-                </Grid>
 
+                </Grid>
+            
             </Grid>
 
+        <Button
+                variant="contained"
+                sx={{ margin: 3 }}
+                onClick={() => navigate("/clientes")}
+            >
+                Ver Lista de Clientes
+            </Button>
+         
+
     </>
+    
 
    ) 
   
