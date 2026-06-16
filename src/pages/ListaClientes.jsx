@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress, Alert, TextField } from "@mui/material";
 import Header from "../components/layout/header";
+import FormularioAltaCliente from "../components/clientes/FormularioAltaCliente";
 
 const ListaClientes = () => {
 
@@ -8,26 +9,37 @@ const ListaClientes = () => {
     const [loading, setLoading] = useState(true); //indica si se están cargando los clientes
     const [error, setError] = useState(null); //guarda el mensaje de error en caso de que ocurra un error al cargar los clientes  
     const [busqueda, setBusqueda] = useState(""); //guarda lo q el usuario escribe en el input de búsqueda
+
+    const obtenerClientes = async () => {
+        try {
+            setLoading(true);//muestra el spiner mientras carga
+            const res = await fetch("https://fakestoreapi.com/users");//traer los clientes desde la API
+            const data = await res.json();
+
+            setClientes(data);//guarda los clientes en el estado
+        } catch (err) {
+            setError("Error al cargar clientes");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-
-        const obtenerClientes = async () => {
-            try {
-                setLoading(true);//muestra el spiner mientras carga
-                const res = await fetch("https://fakestoreapi.com/users");//traer los clientes desde la API
-                const data = await res.json();
-
-                setClientes(data);//guarda los clientes en el estado
-            } catch (err) {
-                setError("Error al cargar clientes");
-            } finally {
-                setLoading(false);
-            }
-        };
         obtenerClientes();
     }, []);
+
+    const obtenerSiguienteId = (lista) =>
+        lista.reduce((max, c) => Math.max(max, Number(c.id) || 0), 0) + 1;
+
+    const handleClienteCreado = (cliente) => {
+        setClientes((prev) => [
+            ...prev,
+            { ...cliente, id: obtenerSiguienteId(prev) },
+        ]);
+    };
    const clientesFiltrados = clientes.filter((c) =>
-    c.name.lastname.toLowerCase().includes(busqueda.toLowerCase()) ||
-    c.address.city.toLowerCase().includes(busqueda.toLowerCase())
+    c.name?.lastname?.toLowerCase().includes(busqueda.toLowerCase()) ||
+    c.address?.city?.toLowerCase().includes(busqueda.toLowerCase())
     );
     
     return (
@@ -43,7 +55,8 @@ const ListaClientes = () => {
              onChange={(e) => setBusqueda(e.target.value)}
               sx={{ m: 3, width: 350 }}
             />
-            
+
+            <FormularioAltaCliente onClienteCreado={handleClienteCreado} />            
             {loading && <CircularProgress sx={{ m: 3 }} />}
             {error && <Alert severity="error">{error}</Alert>}
 
@@ -62,13 +75,13 @@ const ListaClientes = () => {
                         </TableHead>
 
                         <TableBody>
-                            {clientesFiltrados.map((c) => (
-                                <TableRow key={c.id}>
+                            {clientesFiltrados.map((c, index) => (
+                                <TableRow key={`${c.id}-${c.email ?? index}`}>
                                     <TableCell>{c.id}</TableCell>
-                                    <TableCell>{c.name.firstname} {c.name.lastname}</TableCell>
+                                    <TableCell>{c.name?.firstname} {c.name?.lastname}</TableCell>
                                     <TableCell>{c.email}</TableCell>
                                     <TableCell>{c.phone}</TableCell>
-                                    <TableCell>{c.address.city}</TableCell>
+                                    <TableCell>{c.address?.city}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
