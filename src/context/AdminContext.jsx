@@ -19,12 +19,13 @@ export const AdminProvider = ({ children }) => {
 // la sesión activa
   useEffect(() => {
     const adminGuardado = localStorage.getItem("admin");
+
   // si habia una sesion guardada, la recuperamos
   // para que el usuario no tenga que volver a iniciar sesion al referescar.
     if (adminGuardado) {
       setAdmin(JSON.parse(adminGuardado));
         }
-       // comprobamos una vez mas si existe una sesion ya iniciada
+       //comprobamos una vez mas si existe una sesion ya iniciada
       setCargando(false);
     }, []);
 
