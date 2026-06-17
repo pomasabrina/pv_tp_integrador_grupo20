@@ -10,6 +10,7 @@ const RutaProtegida = ({ children }) => {
   if (cargando) {
     return null;
   }
+  
   // si no hay admin logueado, se lo envia al usuario a la pantalla de login.
   if (admin === null) {
     return <Navigate to="/login" replace />;
