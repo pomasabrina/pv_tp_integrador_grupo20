@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress, Alert, TextField } from "@mui/material";
+import { Link } from "react-router-dom";
+import { Table, Button, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress, Alert, TextField } from "@mui/material";
 import Header from "../components/layout/header";
 import FormularioAltaCliente from "../components/clientes/FormularioAltaCliente";
 
@@ -71,6 +72,7 @@ const ListaClientes = () => {
                                 <TableCell>Email</TableCell>
                                 <TableCell>Teléfono</TableCell>
                                 <TableCell>Ciudad</TableCell>
+                                <TableCell>Acciones</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -82,6 +84,11 @@ const ListaClientes = () => {
                                     <TableCell>{c.email}</TableCell>
                                     <TableCell>{c.phone}</TableCell>
                                     <TableCell>{c.address?.city}</TableCell>
+                                    <TableCell>
+                                        <Button component={Link} to={`/clientes/${c.id}`}>
+                                            Ver Ficha Completa
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
