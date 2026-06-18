@@ -14,7 +14,8 @@ import {
     Alert, 
     TextField 
 } from "@mui/material";
-import Header from "../components/layout/header";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import FormularioAltaCliente from "../components/clientes/FormularioAltaCliente";
 
 const ListaClientes = () => {
@@ -109,6 +110,8 @@ const ListaClientes = () => {
                     </Table>
                 </TableContainer>
             )}
+
+            <Footer />
         </>
     );
 };

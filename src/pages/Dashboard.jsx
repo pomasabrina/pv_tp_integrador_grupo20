@@ -1,4 +1,5 @@
-import Header from "../components/layout/header";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import { Card, CardContent, Typography, Grid ,Button} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +7,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
 return(
     <>
-      <Header />
+        <Header />
 
         <Typography variant="h4" sx={{ margin: 3 }}>
             Clientes
@@ -76,8 +77,8 @@ return(
             Ver Lista de Clientes
         </Button>        
 
-    </>
-    
+        <Footer />
+    </>   
 )};
 
 export default Dashboard;
