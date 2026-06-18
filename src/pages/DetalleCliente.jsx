@@ -10,7 +10,8 @@ import {
   Button,
   Divider,
   Box,
-  Snackbar
+  Snackbar,
+  Stack
 } from "@mui/material";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
@@ -178,7 +179,16 @@ const DetalleCliente = () => {
 
           {/* Lógica de Control de Permisos por Sector */}
           {esGerente && (
-            <Box display="flex">
+            <Box sx={{ display: 'flex', gap: 2 }}>
+
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate("/clientes")}
+                size="medium"
+              >
+                Volver Atrás
+              </Button>
 
               <Button
                 variant="contained"
@@ -186,6 +196,7 @@ const DetalleCliente = () => {
                 onClick={handleEliminarCliente}
                 size="medium"
                 sx={{ fontWeight: 'bold' }}
+                
               >
                 Eliminar Cliente
               </Button>
@@ -194,12 +205,23 @@ const DetalleCliente = () => {
           )}
 
           {esSoporte && (
-            <Box sx={{ mt: 2 }}>
+            <Box> 
               <Alert severity="info">
                 <strong>Perfil de Solo Lectura:</strong> Su pertenencia al sector de <strong>Soporte</strong> no le permite eliminar clientes.
               </Alert>
+
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate("/clientes")}
+                size="medium"
+                sx={{ mt: 2 }}
+              >
+                Volver Atrás
+              </Button>
             </Box>
           )}
+
         </Paper>
 
       </Container>

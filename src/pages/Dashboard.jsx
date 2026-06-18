@@ -10,7 +10,7 @@ return(
         <Header />
 
         <Typography variant="h4" sx={{ margin: 3 }}>
-            Clientes
+            Panel de Clientes
         </Typography>
 
         <Grid container spacing={3} sx={{ padding: 3 }}>
