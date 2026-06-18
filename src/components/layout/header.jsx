@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from '../../hook/useAdmin.js';
 
@@ -14,12 +14,12 @@ const Header = () => {
 return (
     <AppBar position="static">
 
-        <Toolbar>
-            <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
+        <Toolbar sx={{ my: 4 }}>
+            <Typography variant="h4" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
                 Panel de Control
             </Typography>
 
-            <Typography sx={{ marginRight: 2, fontWeight: 'bold' }}>
+            <Typography variant="h6" sx={{ marginRight: 2, fontWeight: 'bold' }}>
                 {admin?.nombre} - {admin?.sector}
             </Typography>
 
@@ -29,6 +29,37 @@ return (
                 onClick={handleLogout}>Cerrar Sesión
             </Button>
         </Toolbar>
+
+        <Toolbar sx={{ bgcolor:"#e0e0e0", justifyContent: "center" }}>
+            <Button 
+                onClick={() => navigate("/dashboard")}
+                sx={{ 
+                    color: "primary.main", 
+                    fontWeight: location.pathname === "/dashboard" ? 'bold' : 'normal',
+                    borderBottom: location.pathname === "/dashboard" ? '2px solid #1976d2' : 'none',
+                    borderRadius: 0,
+                    px: 1.5,
+                    '&:hover': { bgcolor: '#eeeeee' },
+                }}
+            >
+                Inicio   
+            </Button>
+                    
+            <Button 
+                onClick={() => navigate("/clientes")}
+                sx={{ 
+                    color: "primary.main", 
+                    fontWeight: location.pathname.startsWith("/clientes") ? 'bold' : 'normal',
+                    borderBottom: location.pathname.startsWith("/clientes") ? '2px solid #1976d2' : 'none',
+                    borderRadius: 0,
+                    px: 1.5,
+                    '&:hover': { bgcolor: '#eeeeee' },
+                }}
+            >
+                Clientes
+            </Button>
+        </Toolbar>
+
     </AppBar>
 )};
 export default Header;  
