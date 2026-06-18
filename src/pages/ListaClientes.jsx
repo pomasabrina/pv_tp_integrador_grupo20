@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Table, Button, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress, Alert, TextField } from "@mui/material";
+import { 
+    Table, 
+    Button, 
+    TableBody, 
+    TableCell, 
+    TableContainer, 
+    TableHead, 
+    TableRow, 
+    Paper, 
+    Typography, 
+    CircularProgress, 
+    Alert, 
+    TextField 
+} from "@mui/material";
 import Header from "../components/layout/header";
 import FormularioAltaCliente from "../components/clientes/FormularioAltaCliente";
 
@@ -67,12 +80,12 @@ const ListaClientes = () => {
 
                         <TableHead>
                             <TableRow>
-                                <TableCell>ID</TableCell>
-                                <TableCell>Nombre</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell>Teléfono</TableCell>
-                                <TableCell>Ciudad</TableCell>
-                                <TableCell>Acciones</TableCell>
+                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>ID</TableCell>
+                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>NOMBRE</TableCell>
+                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>EMAIL</TableCell>
+                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>TELÉFONO</TableCell>
+                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>CIUDAD</TableCell>
+                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>ACCIONES</TableCell>
                             </TableRow>
                         </TableHead>
 
@@ -85,7 +98,7 @@ const ListaClientes = () => {
                                     <TableCell>{c.phone}</TableCell>
                                     <TableCell>{c.address?.city}</TableCell>
                                     <TableCell>
-                                        <Button component={Link} to={`/clientes/${c.id}`}>
+                                        <Button variant="outlined" component={Link} to={`/clientes/${c.id}`}>
                                             Ver Ficha Completa
                                         </Button>
                                     </TableCell>

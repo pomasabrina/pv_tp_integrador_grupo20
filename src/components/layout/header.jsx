@@ -17,7 +17,7 @@ const Header = () => {
             <Toolbar>
 
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                    Panel de Clientes
+                    Panel de Control
                 </Typography>
 
                 <Typography sx={{ marginRight: 2 }}>
