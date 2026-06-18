@@ -12,7 +12,8 @@ import {
   Box,
   Snackbar
 } from "@mui/material";
-import Header from "../components/layout/header";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import { useAdmin } from "../hook/useAdmin";
 
 const DetalleCliente = () => {
@@ -124,6 +125,7 @@ const DetalleCliente = () => {
   return (
     <>
       <Header />
+
       <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
 
         <Paper sx={{ p: 4 }} elevation={3}>
@@ -202,6 +204,7 @@ const DetalleCliente = () => {
 
       </Container>
 
+      <Footer />
     </>
   );
 };
