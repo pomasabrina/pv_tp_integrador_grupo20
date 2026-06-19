@@ -65,9 +65,6 @@ const DetalleCliente = () => {
           throw new Error("No se pudo procesar la solicitud de eliminación.");
         }
 
-        const data = await response.json();
-        console.log("Cliente eliminado", data);
-        
         setOpenSnackbar(true);
 
         setTimeout(() => {
@@ -110,8 +107,7 @@ const DetalleCliente = () => {
     );
   }
 
-  // Desetructuracion del objeto cliente
-  const { 
+  const {
     name = {}, 
     email = "", 
     phone = "", 
@@ -120,8 +116,8 @@ const DetalleCliente = () => {
     address = {} 
   } = cliente || {};
 
-  const esGerente = admin?.sector === "Gerencia";
-  const esSoporte = admin?.sector === "Soporte";
+  const esGerente = admin?.rol === "Gerencia";
+  const esSoporte = admin?.rol === "Soporte";
 
   return (
     <>
@@ -135,7 +131,7 @@ const DetalleCliente = () => {
           </Typography>
           
           <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-            Operador del Sistema: <strong>{admin?.nombre}</strong> | Sector: <strong>{admin?.sector}</strong>
+            Operador del Sistema: <strong>{admin?.nombre}</strong> | Rol: <strong>{admin?.rol}</strong>
           </Typography>
           
           <Divider sx={{ my: 2 }} />
@@ -177,7 +173,6 @@ const DetalleCliente = () => {
 
           <Divider sx={{ mt: 4, mb: 2 }} />
 
-          {/* Lógica de Control de Permisos por Sector */}
           {esGerente && (
             <Box sx={{ display: 'flex', gap: 2 }}>
 
@@ -205,9 +200,9 @@ const DetalleCliente = () => {
           )}
 
           {esSoporte && (
-            <Box> 
+            <Box>
               <Alert severity="info">
-                <strong>Perfil de Solo Lectura:</strong> Su pertenencia al sector de <strong>Soporte</strong> no le permite eliminar clientes.
+                <strong>Perfil de Solo Lectura:</strong> Su rol de <strong>Soporte</strong> no le permite eliminar clientes.
               </Alert>
 
               <Button

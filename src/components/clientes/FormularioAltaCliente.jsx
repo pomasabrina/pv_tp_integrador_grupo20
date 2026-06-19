@@ -10,6 +10,9 @@ import {
   Snackbar,
 } from "@mui/material";
 
+import { validarAltaCliente } from "../../utils/validaciones";
+import { crearCliente } from "../../services/clienteService";
+
 const estadoInicial = {
   email: "",
   username: "",
@@ -25,6 +28,7 @@ const estadoInicial = {
 
 const FormularioAltaCliente = ({ onClienteCreado }) => {
   const [form, setForm] = useState(estadoInicial);
+  const [errores, setErrores] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
@@ -32,50 +36,49 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    setErrores((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
     setSnackbar({ open: false, message: "" });
 
+    const erroresValidacion = validarAltaCliente(form);
+    setErrores(erroresValidacion);
+
+    if (Object.keys(erroresValidacion).length > 0) {
+      return;
+    }
+
     const nuevoCliente = {
-      email: form.email,
-      username: form.username,
+      email: form.email.trim(),
+      username: form.username.trim(),
       password: form.password,
       name: {
-        firstname: form.firstname,
-        lastname: form.lastname,
+        firstname: form.firstname.trim(),
+        lastname: form.lastname.trim(),
       },
       address: {
-        city: form.city,
-        street: form.street,
+        city: form.city.trim(),
+        street: form.street.trim(),
         number: Number(form.number),
-        zipcode: form.zipcode,
+        zipcode: form.zipcode.trim(),
         geolocation: {
           lat: "-37.3159",
           long: "81.1496",
         },
       },
-      phone: form.phone,
+      phone: form.phone.trim(),
     };
 
     try {
-      const res = await fetch("https://fakestoreapi.com/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevoCliente),
-      });
-
-      if (res.status !== 200 && res.status !== 201) {
-        throw new Error("No se pudo dar de alta al cliente");
-      }
-
-      const data = await res.json();
+      setLoading(true);
+      const data = await crearCliente(nuevoCliente);
       const idAsignado = data.id;
 
       setForm(estadoInicial);
+      setErrores({});
       setSnackbar({
         open: true,
         message: `Cliente registrado correctamente. ID asignado por la API: ${idAsignado}`,
@@ -126,6 +129,8 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.firstname)}
+              helperText={errores.firstname}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -136,6 +141,8 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.lastname)}
+              helperText={errores.lastname}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -147,6 +154,8 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.email)}
+              helperText={errores.email}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -157,6 +166,8 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.phone)}
+              helperText={errores.phone}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -167,6 +178,8 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.username)}
+              helperText={errores.username}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -178,6 +191,8 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.password)}
+              helperText={errores.password}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -188,6 +203,8 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.city)}
+              helperText={errores.city}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -198,6 +215,8 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.zipcode)}
+              helperText={errores.zipcode}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 8 }}>
@@ -208,17 +227,20 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.street)}
+              helperText={errores.street}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 4 }}>
             <TextField
               label="Número"
               name="number"
-              type="number"
               value={form.number}
               onChange={handleChange}
               fullWidth
               required
+              error={Boolean(errores.number)}
+              helperText={errores.number}
             />
           </Grid>
           <Grid size={12}>
