@@ -1,33 +1,63 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { TextField, MenuItem, Button, Typography, Container } from "@mui/material";
+import { TextField, Button, Typography, Container, Alert } from "@mui/material";
+
 import { useAdmin } from "../hook/useAdmin";
+import { validarLogin } from "../utils/validaciones";
+import usuarios from "../data/usuarios.json";
 
 const Login = () => {
   const [nombre, setNombre] = useState("");
-  const [sector, setSector] = useState("");
+  const [contraseña, setContraseña] = useState("");
+  const [errores, setErrores] = useState({});
+  const [errorAuth, setErrorAuth] = useState("");
 
-  const {admin, iniciarSesion } = useAdmin();
+  const { admin, iniciarSesion } = useAdmin();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    iniciarSesion({ nombre, sector });
-    navigate("/dashboard");
-  };
-  /*para que no se rediriga al login si ya esta logueado y no se pueda acceder a la pagina*/
   useEffect(() => {
     if (admin !== null) {
       navigate("/dashboard", { replace: true });
     }
   }, [admin, navigate]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErrorAuth("");
+
+    const erroresValidacion = validarLogin(nombre, contraseña);
+    setErrores(erroresValidacion);
+
+    if (Object.keys(erroresValidacion).length > 0) {
+      return;
+    }
+
+    const usuario = usuarios.find(
+      (u) =>
+        u.nombre.toLowerCase() === nombre.trim().toLowerCase() &&
+        u.contraseña === contraseña
+    );
+
+    if (!usuario) {
+      setErrorAuth("Nombre o contraseña incorrectos");
+      return;
+    }
+
+    iniciarSesion({ nombre: usuario.nombre, rol: usuario.rol });
+    navigate("/dashboard");
+  };
+
   return (
     <Container maxWidth="sm">
-      <Typography variant="h4">
+      <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
         Acceso de Administrador
       </Typography>
+
+      {errorAuth && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {errorAuth}
+        </Alert>
+      )}
 
       <form onSubmit={handleSubmit}>
         <TextField
@@ -37,22 +67,23 @@ const Login = () => {
           fullWidth
           required
           margin="normal"
+          error={Boolean(errores.nombre)}
+          helperText={errores.nombre}
         />
 
         <TextField
-          select
-          label="Sector"
-          value={sector}
-          onChange={(e) => setSector(e.target.value)}
+          label="Contraseña"
+          type="password"
+          value={contraseña}
+          onChange={(e) => setContraseña(e.target.value)}
           fullWidth
           required
           margin="normal"
-        >
-          <MenuItem value="Soporte">Soporte</MenuItem>
-          <MenuItem value="Gerencia">Gerencia</MenuItem>
-        </TextField>
+          error={Boolean(errores.contraseña)}
+          helperText={errores.contraseña}
+        />
 
-        <Button type="submit" variant="contained" fullWidth>
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
           Ingresar
         </Button>
       </form>
