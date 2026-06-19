@@ -1,119 +1,155 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { 
-    Table, 
-    Button, 
-    TableBody, 
-    TableCell, 
-    TableContainer, 
-    TableHead, 
-    TableRow, 
-    Paper, 
-    Typography, 
-    CircularProgress, 
-    Alert, 
-    TextField 
+import {
+  Table,
+  Button,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  CircularProgress,
+  Alert,
+  TextField,
 } from "@mui/material";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import FormularioAltaCliente from "../components/clientes/FormularioAltaCliente";
 
 const ListaClientes = () => {
+  const [clientes, setClientes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [busqueda, setBusqueda] = useState("");
 
-    const [clientes, setClientes] = useState([]); //guarda los clientes obtenidos de la API
-    const [loading, setLoading] = useState(true); //indica si se están cargando los clientes
-    const [error, setError] = useState(null); //guarda el mensaje de error en caso de que ocurra un error al cargar los clientes  
-    const [busqueda, setBusqueda] = useState(""); //guarda lo q el usuario escribe en el input de búsqueda
+  const obtenerClientes = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("https://fakestoreapi.com/users");
+      const data = await res.json();
+      setClientes(data);
+    } catch (err) {
+      setError("Error al cargar clientes");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const obtenerClientes = async () => {
-        try {
-            setLoading(true);//muestra el spiner mientras carga
-            const res = await fetch("https://fakestoreapi.com/users");//traer los clientes desde la API
-            const data = await res.json();
+  useEffect(() => {
+    obtenerClientes();
+  }, []);
 
-            setClientes(data);//guarda los clientes en el estado
-        } catch (err) {
-            setError("Error al cargar clientes");
-        } finally {
-            setLoading(false);
-        }
-    };
+  const obtenerSiguienteId = (lista) =>
+    lista.reduce((max, c) => Math.max(max, Number(c.id) || 0), 0) + 1;
 
-    useEffect(() => {
-        obtenerClientes();
-    }, []);
+  const handleClienteCreado = (cliente) => {
+    setClientes((prev) => [
+      ...prev,
+      { ...cliente, id: obtenerSiguienteId(prev) },
+    ]);
+  };
 
-    const obtenerSiguienteId = (lista) =>
-        lista.reduce((max, c) => Math.max(max, Number(c.id) || 0), 0) + 1;
+  const clientesFiltrados = clientes.filter(
+    (c) =>
+      c.name?.lastname?.toLowerCase().includes(busqueda.toLowerCase()) ||
+      c.address?.city?.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
-    const handleClienteCreado = (cliente) => {
-        setClientes((prev) => [
-            ...prev,
-            { ...cliente, id: obtenerSiguienteId(prev) },
-        ]);
-    };
-   const clientesFiltrados = clientes.filter((c) =>
-    c.name?.lastname?.toLowerCase().includes(busqueda.toLowerCase()) ||
-    c.address?.city?.toLowerCase().includes(busqueda.toLowerCase())
-    );
-    
-    return (
-        <>
-            <Header />
+  return (
+    <>
+      <Header />
 
-            <Typography variant="h4" sx={{ m: 3 }}>
-              Lista de Clientes
-            </Typography>
-            <TextField
-              label="Buscar por apellido o ciudad"
-              value={busqueda}
-             onChange={(e) => setBusqueda(e.target.value)}
-              sx={{ m: 3, width: 350 }}
-            />
+      <Typography variant="h4" sx={{ m: 3 }}>
+        Lista de Clientes
+      </Typography>
 
-            <FormularioAltaCliente onClienteCreado={handleClienteCreado} />            
-            {loading && <CircularProgress sx={{ m: 3 }} />}
-            {error && <Alert severity="error">{error}</Alert>}
+      <TextField
+        label="Buscar por apellido o ciudad"
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        sx={{ m: 3, width: 350 }}
+      />
 
-            {!loading && !error && (
-                <TableContainer component={Paper} sx={{ m: 3 }}>
-                    <Table>
+      <FormularioAltaCliente onClienteCreado={handleClienteCreado} />
 
-                        <TableHead>
-                            <TableRow>
-                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>ID</TableCell>
-                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>NOMBRE</TableCell>
-                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>EMAIL</TableCell>
-                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>TELÉFONO</TableCell>
-                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>CIUDAD</TableCell>
-                                <TableCell variant ="head" sx={{ color: 'primary.main', fontWeight:'bold' }}>ACCIONES</TableCell>
-                            </TableRow>
-                        </TableHead>
+      {loading && <CircularProgress sx={{ m: 3 }} />}
+      {error && <Alert severity="error">{error}</Alert>}
 
-                        <TableBody>
-                            {clientesFiltrados.map((c, index) => (
-                                <TableRow key={`${c.id}-${c.email ?? index}`}>
-                                    <TableCell>{c.id}</TableCell>
-                                    <TableCell>{c.name?.firstname} {c.name?.lastname}</TableCell>
-                                    <TableCell>{c.email}</TableCell>
-                                    <TableCell>{c.phone}</TableCell>
-                                    <TableCell>{c.address?.city}</TableCell>
-                                    <TableCell>
-                                        <Button variant="outlined" component={Link} to={`/clientes/${c.id}`}>
-                                            Ver Ficha Completa
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+      {!loading && !error && (
+        <TableContainer component={Paper} sx={{ m: 3 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  variant="head"
+                  sx={{ color: "primary.main", fontWeight: "bold" }}
+                >
+                  ID
+                </TableCell>
+                <TableCell
+                  variant="head"
+                  sx={{ color: "primary.main", fontWeight: "bold" }}
+                >
+                  NOMBRE
+                </TableCell>
+                <TableCell
+                  variant="head"
+                  sx={{ color: "primary.main", fontWeight: "bold" }}
+                >
+                  EMAIL
+                </TableCell>
+                <TableCell
+                  variant="head"
+                  sx={{ color: "primary.main", fontWeight: "bold" }}
+                >
+                  TELÉFONO
+                </TableCell>
+                <TableCell
+                  variant="head"
+                  sx={{ color: "primary.main", fontWeight: "bold" }}
+                >
+                  CIUDAD
+                </TableCell>
+                <TableCell
+                  variant="head"
+                  sx={{ color: "primary.main", fontWeight: "bold" }}
+                >
+                  ACCIONES
+                </TableCell>
+              </TableRow>
+            </TableHead>
 
-                    </Table>
-                </TableContainer>
-            )}
+            <TableBody>
+              {clientesFiltrados.map((c, index) => (
+                <TableRow key={`${c.id}-${c.email ?? index}`}>
+                  <TableCell>{c.id}</TableCell>
+                  <TableCell>
+                    {c.name?.firstname} {c.name?.lastname}
+                  </TableCell>
+                  <TableCell>{c.email}</TableCell>
+                  <TableCell>{c.phone}</TableCell>
+                  <TableCell>{c.address?.city}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outlined"
+                      component={Link}
+                      to={`/clientes/${c.id}`}
+                    >
+                      Ver Ficha Completa
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
 
-            <Footer />
-        </>
-    );
+      <Footer />
+    </>
+  );
 };
 
 export default ListaClientes;
