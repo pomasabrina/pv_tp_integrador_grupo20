@@ -5,6 +5,7 @@ import Dashboard from "../pages/Dashboard";
 import ListaClientes from "../pages/ListaClientes";
 import DetalleCliente from "../pages/DetalleCliente";
 import RutaProtegida from "../components/common/RutaProtegida";
+import PaginaError from "../pages/PaginaError";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <Navigate to="/dashboard" replace />,
+    element: <PaginaError />,
   },
+  
 ]);
