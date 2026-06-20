@@ -14,9 +14,16 @@ import {
   Alert,
   TextField,
 } from "@mui/material";
+
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import FormularioAltaCliente from "../components/clientes/FormularioAltaCliente";
+import { agregarActividad } from "../utils/registroActividad";
 
 const ListaClientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -45,6 +52,7 @@ const ListaClientes = () => {
     lista.reduce((max, c) => Math.max(max, Number(c.id) || 0), 0) + 1;
 
   const handleClienteCreado = (cliente) => {
+    agregarActividad("Se registró un nuevo cliente");
     setClientes((prev) => [
       ...prev,
       { ...cliente, id: obtenerSiguienteId(prev) },
@@ -71,8 +79,19 @@ const ListaClientes = () => {
         onChange={(e) => setBusqueda(e.target.value)}
         sx={{ m: 3, width: 350 }}
       />
+{/* efecto despliegue */}
 
-      <FormularioAltaCliente onClienteCreado={handleClienteCreado} />
+      <Accordion sx={{m: 3,border: 1,borderColor: "divider"}}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h6">
+            Alta de Cliente
+          </Typography>
+        </AccordionSummary>
+
+        <AccordionDetails>
+          <FormularioAltaCliente onClienteCreado={handleClienteCreado} />
+        </AccordionDetails>
+      </Accordion>
 
       {loading && <CircularProgress sx={{ m: 3 }} />}
       {error && <Alert severity="error">{error}</Alert>}

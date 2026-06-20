@@ -5,6 +5,7 @@ import { TextField, Button, Typography, Container, Alert } from "@mui/material";
 import { useAdmin } from "../hook/useAdmin";
 import { validarLogin } from "../utils/validaciones";
 import usuarios from "../data/usuarios.json";
+import { agregarActividad } from "../utils/registroActividad";
 
 const Login = () => {
   const [nombre, setNombre] = useState("");
@@ -44,13 +45,21 @@ const Login = () => {
     }
 
     iniciarSesion({ nombre: usuario.nombre, rol: usuario.rol });
+
+    agregarActividad(`${usuario.nombre} inició sesión`);
+
     navigate("/dashboard");
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
-        Acceso de Administrador
+    <Container maxWidth="sm" sx={{ mt: 8, p: 4, bgcolor: "white", borderRadius: 3, boxShadow: 4, borderTop: "4px solid #1976d2" }}>
+    {/* <Container maxWidth="sm" sx={{ mt: 8, p: 4, bgcolor: "white", borderRadius: 2, boxShadow: 3 }}> */}
+      <Typography variant="h6" align="center" color="text.secondary" sx={{ mb: 1 }}>
+        Panel de Control de Clientes
+      </Typography>
+
+      <Typography variant="h4" align="center" sx={{ mb: 3, fontWeight: "bold", color: "primary.main" }}>
+        Acceso al Sistema
       </Typography>
 
       {errorAuth && (
@@ -83,7 +92,7 @@ const Login = () => {
           helperText={errores.contraseña}
         />
 
-        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 3, py: 1.2, fontWeight: "bold" }}>
           Ingresar
         </Button>
       </form>

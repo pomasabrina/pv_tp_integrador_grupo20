@@ -3,11 +3,20 @@ import Footer from "../components/layout/Footer";
 import { Card, CardContent, Typography, Grid, Box ,Button} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "../hook/useAdmin";
+import { useEffect, useState } from "react";
+
+
 
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const { admin } = useAdmin();
+    const [actividades, setActividades] = useState([]);
+    useEffect(() => {
+        const datos =
+        JSON.parse(localStorage.getItem("actividades")) || [];
+        setActividades(datos);
+    }, []);
 return(
     <>
         <Header />
@@ -15,7 +24,7 @@ return(
         <Typography variant="h4" sx={{ margin: 3 }}>
             Panel de Clientes
         </Typography>
-                <Card sx={{ margin: 3 }}>
+            <Card sx={{ margin: 3 }}>
             <CardContent>
                 <Typography variant="h5" gutterBottom>
                     Bienvenido al Panel de Control de Clientes
@@ -88,7 +97,27 @@ return(
             </Grid>
 
         </Grid>
+        <Card sx={{ m: 3 }}>
+            <CardContent>
+                <Typography variant="h6" gutterBottom>
+                Actividad Reciente
+                </Typography>
 
+                {actividades.length === 0 ? (
+                <Typography>
+                    Sin actividad registrada
+                </Typography>
+                ) : (
+                actividades.map((item, index) => (
+                    <Box key={index} sx={{ mb: 1, p: 1, bgcolor: "#f5f9ff", border: "1px solid #90caf9", borderRadius: 1 }}>
+                        <Typography key={index} sx={{ mb: 1 }}>
+                        • {item}
+                        </Typography>
+                    </Box>
+                ))
+                )}
+            </CardContent>
+        </Card>
         <Box sx={{ textAlign: "center", mb: 3 }}>
             <Button variant="contained" sx={{ margin: 3 }} onClick={() => navigate("/clientes")}>
                 Ver Lista de Clientes

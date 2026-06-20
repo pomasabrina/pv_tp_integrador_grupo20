@@ -147,13 +147,23 @@ const DetalleCliente = () => {
               <Typography variant="body1"><strong>Teléfono:</strong> {phone || "-"}</Typography>
             </Grid>
 
-            <Grid xs={12} sm={6}>
-              <Typography variant="h6" color="info" gutterBottom sx={{ fontWeight: '600' }}>
-                Credenciales de Acceso
-              </Typography>
-              <Typography variant="body1"><strong>Nombre de Usuario:</strong> {username}</Typography>
-              <Typography variant="body1"><strong>Contraseña:</strong> {password}</Typography>
-            </Grid>
+          {/* datos sensible protegidos */}
+          
+            {esGerente && (
+              <Grid xs={12} sm={6}>
+                <Typography variant="h6" color="info" gutterBottom sx={{ fontWeight: '600' }}>
+                  Credenciales de Acceso
+                </Typography>
+
+                <Typography variant="body1">
+                  <strong>Nombre de Usuario:</strong> {username}
+                </Typography>
+
+                <Typography variant="body1">
+                  <strong>Contraseña:</strong> {password}
+                </Typography>
+              </Grid>
+            )}
 
             <Grid xs={12} sm={6}>
               <Typography variant="h6" color="info" gutterBottom sx={{ fontWeight: '600' }}>
