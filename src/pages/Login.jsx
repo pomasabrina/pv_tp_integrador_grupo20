@@ -34,7 +34,7 @@ const Login = () => {
 
     const usuario = usuarios.find(
       (u) =>
-        u.nombre.toLowerCase() === nombre.trim().toLowerCase() &&
+        u.nombre=== nombre.trim() &&
         u.contraseña === contraseña
     );
 
