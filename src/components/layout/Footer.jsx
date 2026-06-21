@@ -62,7 +62,7 @@ const Footer = () => {
                         '&:hover': { color: '#bbdefb' } 
                     }}
                 >
-                    TP - FINAL Grupo 20
+                    TP FINAL - Grupo 20
                     </Link>
                 </Typography>
             </Box>

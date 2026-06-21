@@ -53,7 +53,6 @@ const Login = () => {
 
   return (
     <Container maxWidth="sm" sx={{ mt: 8, p: 4, bgcolor: "white", borderRadius: 3, boxShadow: 4, borderTop: "4px solid #1976d2" }}>
-    {/* <Container maxWidth="sm" sx={{ mt: 8, p: 4, bgcolor: "white", borderRadius: 2, boxShadow: 3 }}> */}
       <Typography variant="h6" align="center" color="text.secondary" sx={{ mb: 1 }}>
         Panel de Control de Clientes
       </Typography>

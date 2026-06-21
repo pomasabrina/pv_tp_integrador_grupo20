@@ -93,10 +93,7 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
 
   return (
     <Paper sx={{ m: 3, p: 3 }}>
-      <Typography variant="h5" sx={{ mb: 2 }}>
-        Alta de Cliente
-      </Typography>
-
+      
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}

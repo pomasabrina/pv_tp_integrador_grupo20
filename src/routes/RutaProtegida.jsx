@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAdmin } from "../../hook/useAdmin";
+import { useAdmin } from "../hook/useAdmin";
 
 const RutaProtegida = () => {
   const { admin, cargando } = useAdmin();
