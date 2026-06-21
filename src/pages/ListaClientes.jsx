@@ -69,7 +69,7 @@ const ListaClientes = () => {
     <>
       <Header />
 
-      <Typography variant="h4" sx={{ m: 3 }}>
+      <Typography variant="h4" sx={{ m: 3, mt: 8 }}>
         Lista de Clientes
       </Typography>
 
@@ -79,8 +79,8 @@ const ListaClientes = () => {
         onChange={(e) => setBusqueda(e.target.value)}
         sx={{ m: 3, width: 350 }}
       />
-{/* efecto despliegue */}
 
+      {/* efecto despliegue */}
       <Accordion sx={{m: 3,border: 1,borderColor: "divider"}}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="h6">

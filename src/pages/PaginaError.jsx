@@ -16,7 +16,7 @@ const PaginaError = () => {
       </Typography>
 
       <Button variant="contained" onClick={() => navigate("/dashboard")}>
-        Volver al Dashboard
+        Volver atrás
       </Button>
     </Paper>
   );

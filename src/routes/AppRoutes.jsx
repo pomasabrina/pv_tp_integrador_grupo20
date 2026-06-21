@@ -4,13 +4,19 @@ import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import ListaClientes from "../pages/ListaClientes";
 import DetalleCliente from "../pages/DetalleCliente";
-import RutaProtegida from "../components/common/RutaProtegida";
+import RutaProtegida from "./RutaProtegida";
 import PaginaError from "../pages/PaginaError";
 
 export const router = createBrowserRouter([
   {
+    path: "/",
+    element: <Navigate to="/login" replace />,
+    errorElement: <PaginaError />,
+  },
+  {
     path: "/login",
     element: <Login />,
+    errorElement: <PaginaError />,
   },
   {
     element: <RutaProtegida />,
