@@ -49,7 +49,7 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
 
     if (Object.keys(erroresValidacion).length > 0) {
       return;
-    }
+    } 
 
     const nuevoCliente = {
       email: form.email.trim(),
@@ -116,7 +116,7 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
         </Alert>
       </Snackbar>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}noValidate>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
@@ -130,16 +130,16 @@ const FormularioAltaCliente = ({ onClienteCreado }) => {
               helperText={errores.firstname}
             />
           </Grid>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField
-              label="Apellido"
-              name="lastname"
-              value={form.lastname}
-              onChange={handleChange}
-              fullWidth
-              required
-              error={Boolean(errores.lastname)}
-              helperText={errores.lastname}
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="Apellido"
+                name="lastname"
+                value={form.lastname}
+                onChange={handleChange}
+                fullWidth
+                required
+                error={Boolean(errores.lastname)}
+                helperText={errores.lastname}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>
